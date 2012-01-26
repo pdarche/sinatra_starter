@@ -1,0 +1,8 @@
+<form action="/things/<%= @thing.id %>" method="PUT">
+  <p>Title: <input type="text" name="title" value="<%= @thing.name %>"></p>
+
+  <p>Description:</p>
+  <textarea name="description" value="<%= @thing.description %>"></textarea>
+
+  <p><input type="submit"></p>
+</form>

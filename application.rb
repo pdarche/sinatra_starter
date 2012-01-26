@@ -1,20 +1,23 @@
 require 'bundler'
 Bundler.require
 
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite://development.sqlite'
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite")
+
+class Thing
+  include DataMapper::Resource
+  
+  property :id, Serial, :key => true
+  property :title, String
+  property :description, Text
+end
 
 get '/' do
   erb :index
 end
 
-get '/things/' do
-  @things = Things.all
+get '/things' do
+  @things = Thing.all
   erb :things_index
-end
-
-get '/things/:id' do
-  @thing = Thing.get(params[:id])
-  erb :things_show
 end
 
 get '/things/new' do
@@ -22,9 +25,14 @@ get '/things/new' do
 end
 
 post '/things' do
-  @thing = Thing.new(params)
+  @thing = Thing.create(params)
   @thing.save
   redirect '/things'
+end
+
+get '/things/:id' do
+  @thing = Thing.get(params[:id])
+  erb :things_show
 end
 
 get '/things/:id/edit' do
