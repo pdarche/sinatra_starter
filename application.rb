@@ -11,6 +11,8 @@ class Thing
   property :description, Text
 end
 
+DataMapper.finalize
+
 get '/' do
   erb :index
 end
@@ -25,7 +27,7 @@ get '/things/new' do
 end
 
 post '/things' do
-  @thing = Thing.create(params)
+  @thing = Thing.new(params)
   @thing.save
   redirect '/things'
 end
@@ -40,9 +42,10 @@ get '/things/:id/edit' do
   erb :things_edit
 end
 
-put '/things/:id' do
+post '/things/:id' do
   @thing = Thing.get(params[:id])
-  @thing.update(params)
+  @thing.update(:title => params[:title], :description => params[:description])
+  @thing.save
   redirect "/things/#{params[:id]}"
 end
 
