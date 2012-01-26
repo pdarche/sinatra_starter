@@ -49,7 +49,7 @@ post '/things/:id' do
   redirect "/things/#{params[:id]}"
 end
 
-delete '/things/:id' do
+get '/things/:id/delete' do
   Thing.get(params[:id]).destroy
   redirect '/things'
 end
